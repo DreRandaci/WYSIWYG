@@ -1,0 +1,40 @@
+h1 {
+	text-align: center;
+}
+input {
+	width: 50%;
+	text-align: center;
+	height: 30px;
+	margin: 20px;
+}
+#textInputDiv {
+	margin: 0 auto;
+	text-align: center;
+}
+header {
+	text-align: center;
+}
+section {
+	text-align: center;
+}
+img {
+	width: 75%;
+	padding: 1em;
+}
+#personContainer {
+	display: flex;
+	justify-content: center;
+}
+#personCardContainer {
+	padding: 1em;
+	margin: 5px;
+}
+#personCardContainer:nth-child(even) {
+    background: yellow;
+}
+#personCardContainer:nth-child(odd) {
+    background: blue;
+}
+.dottedBorder {
+	border: 5px dotted pink;
+}
