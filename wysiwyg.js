@@ -38,10 +38,21 @@ let textInput = document.getElementById('textInput');
 function addPersonToDom() {
 	let person = '';
 	for (let i = 0; i < famousRushHourStarsArray.length; i++) {
-	person += `<div id='personCardContainer'>`;
-	person += 	`<person id='person-[i]'>`;
-	person += 		`<header>${famousRushHourStarsArray[i].name}, ${famousRushHourStarsArray[i].title}</header>`;
-	person += 		`<section>${famousRushHourStarsArray[i].bio}<div><img src='${famousRushHourStarsArray[i].image}'></div></section>`;
+						//parent
+	person += `<div id='personCardContainer' class='cardContainer'>`;
+							//child
+	person += 	`<person id='person' class ='child'>`;
+								//grand child
+	person += 		`<header class='grandChild'>${famousRushHourStarsArray[i].name}, ${famousRushHourStarsArray[i].title}`
+	person +=		`</header>`;
+								//grand child
+	person += 		`<section class='grandChild'>${famousRushHourStarsArray[i].bio}`;
+	person += 		`</section>`;
+								//grand child
+	person += 		`<div class='grandChild'>`;
+									//great grand child
+	person += 			`<img src='${famousRushHourStarsArray[i].image}' class='childOfGrandChild'>`;
+	person += 		`</div>`;
 	person += 	`</person>`;
 	person += `</div>`;
 	personContainer.innerHTML = person;
@@ -50,35 +61,47 @@ function addPersonToDom() {
 
 addPersonToDom();
 
-//decalred here because the function has to fire first
+//declared here because the function has to fire first
 let personCardContainer = document.getElementById('personCardContainer');
+let selectedPerson;
 
 //When you click on one of the person elements, a dotted border should appear around it.
-for (let i = 0; i < personCardContainer.length; i++) {	
-	personCardContainer[i].addEventListener('click', function(e) {
-	console.log(e);
-	// for (let i = 0; i < personContainer.childNodes.length; i++) {
-		if (e.target.id('personCardContainer')) {
-		personCardContainer.classList.add('dottedBorder');
-		// e.target.classList.add('dottedBorder');
-		
-		// (e.target.id === 'personCardContainer' || e.target.localName === 'person' || e.target.localName === 'header' || e.target.localName === 'section' || e.target.localName === 'img') {	
-		};
-	});
-};
-//When you click on one of the person elements, the text input should immediately gain focus so that you can start typing.
-		textInput.focus();		
-	// };
-
-
-// Event listeners are created
-for (let i = 0; i < personCardContainer.length; i++) {
-  personCardContainer[i].addEventListener("click", function (event) {
+for (let i = 0; i < personContainer.childNodes.length; i++) {
+	// Event listeners are created
+  personContainer.childNodes[i].addEventListener("click", function(e) {
     // Logic to execute when the element is clicked
+    changeBorder(e);
+    replaceBio();
   });
 };
 
+function changeBorder(e) {
+	//for main card container
+ if (e.target.classList.contains('cardContainer')) {
+    selectedPerson = e.target;
+    //for <person> element
+  } else if (e.target.classList.contains('child')) {
+    selectedPerson = e.target.parentNode;
+    //for <header> and <section> and <div> wrapper elements
+  } else if (e.target.classList.contains('grandChild')) {
+    selectedPerson = e.target.parentNode.parentNode;
+    //for image 
+  } else if (e.target.classList.contains('childOfGrandChild')) {
+    selectedPerson = e.target.parentNode.parentNode.parentNode; 
+  };
+  selectedPerson.classList.add('dottedBorder'); 
+};
 
-
-
+// When there is a highlighted person element, and you begin typing in the input box, the person's biography should be immediately bound to what you are typing, letter by letter.
+// When you press the enter/return key when typing in the input field, then the content of the input field should immediately be blank.
+function replaceBio() {
+	textInput.focus();
+	textInput.addEventListener('keyup', function(e) { 
+		if (e.key === 'Enter') {
+  		textInput.value = '';
+		} else {
+		let currentBio = selectedPerson.childNodes[0].childNodes[1].innerHTML = textInput.value;
+		};
+	});
+};
 
